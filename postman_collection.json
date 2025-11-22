@@ -1,0 +1,482 @@
+{
+  "info": {
+    "name": "Laravel Library Management API",
+    "description": "Complete API testing collection for the library management system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const response = pm.response.json();",
+                  "    pm.collectionVariables.set('token', response.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "login"]
+            }
+          }
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/logout",
+              "host": ["{{base_url}}"],
+              "path": ["api", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authors",
+      "item": [
+        {
+          "name": "Get All Authors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/authors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "authors"]
+            }
+          }
+        },
+        {
+          "name": "Create Author",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"J.K. Rowling\",\n  \"bio\": \"British author best known for the Harry Potter series\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/authors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "authors"]
+            }
+          }
+        },
+        {
+          "name": "Get Author by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/authors/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "authors", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Author",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"J.K. Rowling Updated\",\n  \"bio\": \"Updated bio\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/authors/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "authors", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Author",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/authors/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "authors", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Author - Validation Error (Missing Name)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bio\": \"Bio without name\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/authors",
+              "host": ["{{base_url}}"],
+              "path": ["api", "authors"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Get All Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Fantasy\",\n  \"description\": \"Books involving magical elements\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/categories",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories"]
+            }
+          }
+        },
+        {
+          "name": "Get Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Fantasy Updated\",\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/categories/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Get All Books",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/books",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books"]
+            }
+          }
+        },
+        {
+          "name": "Create Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Harry Potter and the Philosopher's Stone\",\n  \"description\": \"First book in the Harry Potter series\",\n  \"author_id\": 1,\n  \"category_id\": 1,\n  \"isbn\": \"978-0-7475-3269-9\",\n  \"published_year\": 1997\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/books",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books"]
+            }
+          }
+        },
+        {
+          "name": "Get Book by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/books/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Book",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Harry Potter and the Sorcerer's Stone\",\n  \"description\": \"American title\",\n  \"author_id\": 1,\n  \"category_id\": 1,\n  \"isbn\": \"978-0-7475-3269-9\",\n  \"published_year\": 1998\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/books/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Book",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/books/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books", "1"]
+            }
+          }
+        },
+        {
+          "name": "Create Book - Validation Error (Invalid Author ID)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Book\",\n  \"author_id\": 999,\n  \"category_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/books",
+              "host": ["{{base_url}}"],
+              "path": ["api", "books"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Borrows",
+      "item": [
+        {
+          "name": "Get All Borrows",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/borrows",
+              "host": ["{{base_url}}"],
+              "path": ["api", "borrows"]
+            }
+          }
+        },
+        {
+          "name": "Borrow Book",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"book_id\": 1,\n  \"borrowed_at\": \"2023-11-21T10:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/borrows",
+              "host": ["{{base_url}}"],
+              "path": ["api", "borrows"]
+            }
+          }
+        },
+        {
+          "name": "Return Book",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"returned_at\": \"2023-11-28T10:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/borrows/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "borrows", "1"]
+            }
+          }
+        },
+        {
+          "name": "Borrow Book - Unauthorized",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"book_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/borrows",
+              "host": ["{{base_url}}"],
+              "path": ["api", "borrows"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
