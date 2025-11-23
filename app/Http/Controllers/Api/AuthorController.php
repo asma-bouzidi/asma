@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Author;
+use Illuminate\Validation\Rule;
 
 class AuthorController extends Controller
 {
@@ -12,7 +14,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Author::all());
     }
 
     /**
@@ -20,7 +22,14 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:authors,name',
+            'bio' => 'nullable|string',
+        ]);
+
+        $author = Author::create($validated);
+
+        return response()->json($author, 201);
     }
 
     /**
@@ -28,7 +37,8 @@ class AuthorController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $author = Author::findOrFail($id);
+        return response()->json($author);
     }
 
     /**
@@ -36,7 +46,21 @@ class AuthorController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $author = Author::findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('authors')->ignore($author->id),
+            ],
+            'bio' => 'nullable|string',
+        ]);
+
+        $author->update($validated);
+
+        return response()->json($author);
     }
 
     /**
@@ -44,6 +68,9 @@ class AuthorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $author = Author::findOrFail($id);
+        $author->delete();
+
+        return response()->json(null, 204);
     }
 }
